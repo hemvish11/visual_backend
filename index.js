@@ -1,24 +1,14 @@
 require('dotenv').config()
 const express = require("express");
 const app = express();
-
 const bodyParser = require("body-parser");
-
 const mongoose = require("mongoose");
-
 const cors = require("cors");
 
 app.use(bodyParser.urlencoded({ extended: true }))
-
-// app.use(cors({ origin: 'http://localhost:5173' }))
 app.use(cors())
 
-
-// mongoose.connect("mongodb://localhost:27017/visualizationDB");
 mongoose.connect(process.env.MONGO_URL);
-
-
-
 const visualSchema = new mongoose.Schema({
     _id: String,
     end_year: Number,
@@ -59,7 +49,7 @@ app.get('/alldata', async (req, res) => {
 app.get('/alldata/:key', async (req, res) => {
     try {
         let suffix = req.params.key;
-        let data = await Visual.find({}).select(`title ${suffix}`);
+        let data = await Visual.find({}).select(`${suffix}`);
         res.json(data);
     } catch (error) {
         throw error;
